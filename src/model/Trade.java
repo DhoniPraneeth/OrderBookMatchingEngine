@@ -1,66 +1,38 @@
 package model;
 
 public class Trade {
-    private String tradeId;
-    private Order buyOrder;
-    private Order sellOrder;
-    private double matchedPrice;
-    private int matchedQuantity;
 
-    public String getTradeId() {
-        return tradeId;
-    }
+    private final Order buyOrder;
+    private final Order sellOrder;
+    private final double matchedPrice;
 
-    public void setTradeId(String tradeId) {
-        this.tradeId = tradeId;
-    }
+    public Trade(Order buyOrder,
+                 Order sellOrder,
+                 double matchedPrice) {
 
-    public double getMatchedPrice() {
-        return matchedPrice;
-    }
-
-    public void setMatchedPrice(double matchedPrice) {
+        this.buyOrder = buyOrder;
+        this.sellOrder = sellOrder;
         this.matchedPrice = matchedPrice;
-    }
-
-    public int getMatchedQuantity() {
-        return matchedQuantity;
-    }
-
-    public void setMatchedQuantity(int matchedQuantity) {
-        this.matchedQuantity = matchedQuantity;
-    }
-
-    public boolean isConfirmationSuccess() {
-        return confirmationSuccess;
-    }
-
-    public void setConfirmationSuccess(boolean confirmationSuccess) {
-        this.confirmationSuccess = confirmationSuccess;
-    }
-
-    private boolean confirmationSuccess;
-    @Override
-    public String toString() {
-        return "Trade{" +
-                "buyOrder=" + buyOrder +
-                ", sellOrder=" + sellOrder +
-                '}';
     }
 
     public Order getBuyOrder() {
         return buyOrder;
     }
 
-    public void setBuyOrder(Order buyOrder) {
-        this.buyOrder = buyOrder;
-    }
-
     public Order getSellOrder() {
         return sellOrder;
     }
 
-    public void setSellOrder(Order sellOrder) {
-        this.sellOrder = sellOrder;
+    public double getMatchedPrice() {
+        return matchedPrice;
+    }
+
+    @Override
+    public String toString() {
+        return buyOrder.getTraderName()
+                + " <-> "
+                + sellOrder.getTraderName()
+                + " @ "
+                + matchedPrice;
     }
 }

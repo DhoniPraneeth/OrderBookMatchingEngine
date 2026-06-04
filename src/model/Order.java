@@ -1,36 +1,20 @@
 package model;
 
 public class Order {
-    private String orderId;
-    private String traderName;
-    private Side side;
-    private Double price;
-    private int quantity;
 
-    public String getOrderId() {
-        return orderId;
-    }
+    private final String traderName;
+    private final OrderSide side;
+    private final double price;
+    private final int quantity;
 
-    @Override
-    public String toString() {
-        return "Order: " +
-                "orderId='" + orderId + '\'' +
-                ", traderName='" + traderName + '\'' +
-                ", side=" + side +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                '\n';
-    }
+    public Order(String traderName,
+                 OrderSide side,
+                 double price,
+                 int quantity) {
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
+        this.traderName = traderName;
+        this.side = side;
+        this.price = price;
         this.quantity = quantity;
     }
 
@@ -38,23 +22,26 @@ public class Order {
         return traderName;
     }
 
-    public void setTraderName(String traderName) {
-        this.traderName = traderName;
-    }
-
-    public Side getSide() {
+    public OrderSide getSide() {
         return side;
     }
 
-    public void setSide(Side side) {
-        this.side = side;
-    }
-
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public int getQuantity() {
+        return quantity;
+    }
+
+    @Override
+    public String toString() {
+        return traderName +
+                " " +
+                side +
+                " " +
+                price +
+                " " +
+                quantity;
     }
 }
