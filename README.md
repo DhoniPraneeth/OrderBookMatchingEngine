@@ -96,16 +96,16 @@ Trades Matched : 2
 
 Confirmations Success : 2
 
-Confirmations Failed : 0
+Confirmations Failed : 0 
 
 Unmatched Orders : 1
 
 ## Concurrency Pitfalls Demonstrated
 
-* Race Condition
+* Race Condition (Synchroniztion/Collections.synchronizedList())
 * Deadlock
 * volatile is not sufficient for counters
 * CompletableFuture.get() causing serialization
-
+*
 
 
