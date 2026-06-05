@@ -1,50 +1,60 @@
 package pitfalls;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Pitfalls {
-
+    private static volatile int count = 0;
     public static void main(String[] args)
             throws Exception {
 
         raceConditionDemo();
 
-        deadlockDemo();
-
         volatileNotEnoughDemo();
 
         getTooEarlyDemo();
+
+        deadlockDemo();
+
     }
 
-    public static void raceConditionDemo()
-            throws Exception {
+    public static void raceConditionDemo() throws Exception {
 
-        System.out.println(
-                "\n--- Race Condition Demo ---");
+        System.out.println("\n--- Race Condition Demo ---");
+        List<Integer> list=new ArrayList<>();
+        Pitfalls lock=new Pitfalls();
+        //List<Integer> list = Collections.synchronizedList(new ArrayList<>());
 
-        List<Integer> list =
-                new ArrayList<>();
+        Runnable task = () -> {
+//            synchronized (lock){
+//                try {
+//                    for(int i = 0; i < 1000; i++) {
+//                        list.add(i);
+//                    }
+//                } catch(Exception e) {
+//
+//                    System.out.println(
+//                            "Race Condition Observed: "
+//                                    + e.getClass().getSimpleName());
+//                }
+//            }
+            try {
+                for(int i = 0; i < 1000; i++) {
+                    list.add(i);
+                }
+            } catch(Exception e) {
 
-        Thread t1 =
-                new Thread(() -> {
+                System.out.println(
+                        "Race Condition Observed: "
+                                + e.getClass().getSimpleName());
+            }
+        };
 
-                    for(int i=0;i<1000;i++){
-
-                        list.add(i);
-                    }
-                });
-
-        Thread t2 =
-                new Thread(() -> {
-
-                    for(int i=0;i<1000;i++){
-
-                        list.add(i);
-                    }
-                });
+        Thread t1 = new Thread(task);
+        Thread t2 = new Thread(task);
 
         t1.start();
         t2.start();
@@ -53,26 +63,73 @@ public class Pitfalls {
         t2.join();
 
         System.out.println(
-                "Expected 2000, Actual "
-                        + list.size());
+                "Expected Size = 2000");
 
         System.out.println(
-                "Fix: synchronize writes");
+                "Actual Size = " + list.size());
+
+        System.out.println(
+                "Fix: synchronize writes or use Collections.synchronizedList()");
     }
+    public static void deadlockDemo() throws InterruptedException {
 
-    public static void deadlockDemo() {
+        System.out.println("\n--- Deadlock Demo ---");
 
-        System.out.println(
-                "\n--- Deadlock Demo ---");
+        Object lock1 = new Object();
+        Object lock2 = new Object();
 
-        System.out.println(
-                "Thread A -> Lock1 -> Lock2");
+        Thread threadA = new Thread(() -> {
 
-        System.out.println(
-                "Thread B -> Lock2 -> Lock1");
+            synchronized (lock1) {
 
-        System.out.println(
-                "Fix: always acquire locks in same order");
+                System.out.println(
+                        "Thread A acquired Lock1");
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+
+                System.out.println(
+                        "Thread A waiting for Lock2");
+
+                synchronized (lock2) {
+
+                    System.out.println(
+                            "Thread A acquired Lock2");
+                }
+            }
+        });
+
+        Thread threadB = new Thread(() -> {
+
+            synchronized (lock2) {
+
+                System.out.println(
+                        "Thread B acquired Lock2");
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+
+                System.out.println(
+                        "Thread B waiting for Lock1");
+
+                synchronized (lock1) {
+
+                    System.out.println(
+                            "Thread B acquired Lock1");
+                }
+            }
+        });
+
+        threadA.start();
+        threadB.start();
+        threadA.join();
+        threadB.join();
     }
 
     public static void volatileNotEnoughDemo()
@@ -84,10 +141,11 @@ public class Pitfalls {
         AtomicInteger counter =
                 new AtomicInteger();
 
+
         Runnable task = () -> {
 
             for(int i=0;i<1000;i++){
-
+                count++;
                 counter.incrementAndGet();
             }
         };
@@ -112,6 +170,9 @@ public class Pitfalls {
         System.out.println(
                 "Atomic Counter = "
                         + counter.get());
+        System.out.println(
+                "Volatile Counter = "
+                        + count);
     }
 
     public static void getTooEarlyDemo() {
