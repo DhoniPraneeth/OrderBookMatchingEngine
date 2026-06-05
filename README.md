@@ -80,6 +80,7 @@ TRADER_E submitted TRADER_E BUY 106.0 5
 TRADER_B submitted TRADER_B SELL 100.0 10
 TRADER_C submitted TRADER_C BUY 99.0 5
 TRADER_A submitted TRADER_A BUY 102.0 10
+
 CONFIRMED: TRADER_A <-> TRADER_B @ 100.0
 CONFIRMED: TRADER_E <-> TRADER_D @ 105.0
 
@@ -89,6 +90,8 @@ Trades Matched : 2
 Confirmations Success : 2
 Confirmations Failed : 0
 Unmatched Orders : 1
+```
+
 
 
 ## Concurrency Pitfalls Demonstrated
