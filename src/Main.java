@@ -15,7 +15,7 @@ public class Main {
 
         List<Order> orders =
                 OrderParser.parse(
-                        "sample-orders.txt");
+                        "src/sample-orders.txt");
 
         Map<String, List<Order>>
                 traderOrders =
@@ -152,8 +152,7 @@ public class Main {
 
             System.out.println(
                     "Unmatched Orders : "
-                            + engine
-                            .getUnmatchedCount());
+                            + engine.unmatchedCount());
 
         } finally {
 
