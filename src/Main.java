@@ -1,11 +1,3 @@
-import model.Order;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 import confirmation.TradeConfirmer;
 import engine.MatchingEngine;
 import model.Order;
@@ -92,7 +84,7 @@ public class Main {
                     List<Order>> entry
                     : traderOrders.entrySet()) {
 
-                TraderTask task =
+                Callable<Integer> task =
                         new TraderTask(
                                 entry.getKey(),
                                 entry.getValue(),

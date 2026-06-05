@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 
-public class TraderTask implements Callable<Void> {
+public class TraderTask implements Callable<Integer> {
 
     private final String traderName;
     private final List<Order> orders;
@@ -21,14 +21,19 @@ public class TraderTask implements Callable<Void> {
         this.queue = queue;
     }
 
-    @Override
-    public Void call() throws Exception {
 
-        for(Order order : orders){
+    @Override
+    public Integer call() throws Exception {
+
+        int submittedOrders = 0;
+
+        for (Order order : orders) {
 
             Thread.sleep(200);
 
             queue.put(order);
+
+            submittedOrders++;
 
             System.out.println(
                     traderName +
@@ -36,6 +41,6 @@ public class TraderTask implements Callable<Void> {
                             order);
         }
 
-        return null;
+        return submittedOrders;
     }
 }
