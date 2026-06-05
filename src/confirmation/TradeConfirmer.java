@@ -2,18 +2,54 @@ package confirmation;
 
 import model.Trade;
 
-import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 public class TradeConfirmer {
 
-    private ExecutorService confirmationExecutor;
+    private final Random random = new Random();
 
-    private List<Trade> tradeHistory;
+    public CompletableFuture<Boolean> confirmTrade(
+            Trade trade,
+            ExecutorService executor){
 
-    private Random random;
+        return CompletableFuture
 
-    public TradeConfirmer() {
+                .supplyAsync(() -> {
+
+                    try {
+                        Thread.sleep(500);
+
+                        if(random.nextInt(10) == 0){
+                            throw new RuntimeException(
+                                    "Confirmation failed");
+                        }
+
+                        return true;
+
+                    } catch (Exception e){
+                        throw new RuntimeException(e);
+                    }
+
+                }, executor)
+
+                .exceptionally(ex -> {
+
+                    System.out.println(
+                            "FAILED: " + trade);
+
+                    return false;
+                })
+
+                .thenApply(result -> {
+
+                    if(result){
+                        System.out.println(
+                                "CONFIRMED: " + trade);
+                    }
+
+                    return result;
+                });
     }
 }

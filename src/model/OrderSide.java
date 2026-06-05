@@ -1,5 +1,6 @@
 package model;
 
-public class OrderSide {
-    
+public enum OrderSide {
+    BUY,
+    SELL
 }
