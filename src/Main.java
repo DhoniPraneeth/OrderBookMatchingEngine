@@ -123,8 +123,7 @@ public class Main {
             long successCount =
                     confirmations
                             .stream()
-                            .filter(
-                                    CompletableFuture::join)
+                            .filter(future->future.join())
                             .count();
 
             long failureCount =

@@ -45,10 +45,8 @@ public class TradeConfirmer {
                 .thenApply(result -> {
 
                     if(result){
-                        System.out.println(
-                                "CONFIRMED: " + trade);
+                        System.out.println("CONFIRMED: " + trade);
                     }
-
                     return result;
                 });
     }
