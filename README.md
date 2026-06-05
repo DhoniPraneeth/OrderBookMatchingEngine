@@ -74,6 +74,7 @@ TRADER_D SELL 105 5
 TRADER_E BUY 106 5
 
 ## Sample Output
+TRADER_D submitted TRADER_D SELL 105.0 5
 
 TRADER_D submitted TRADER_D SELL 105.0 5
 TRADER_E submitted TRADER_E BUY 106.0 5
@@ -92,14 +93,17 @@ Confirmations Failed : 0
 Unmatched Orders : 1
 ```
 
+Confirmations Success : 2
+
+Confirmations Failed : 0 
 
 
 ## Concurrency Pitfalls Demonstrated
 
-* Race Condition
+* Race Condition (Synchroniztion/Collections.synchronizedList())
 * Deadlock
 * volatile is not sufficient for counters
 * CompletableFuture.get() causing serialization
-
+*
 
 
